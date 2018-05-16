@@ -1,4 +1,4 @@
-package com.adam.network;
+package com.adam.commoninterestsservice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class NetworkApplicationTests {
+public class CommonInterestsServiceApplicationTests {
 
     @Test
     public void contextLoads() {
