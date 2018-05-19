@@ -7,7 +7,7 @@ pipeline {
         stage('Build - web-application') {
             agent {
                 docker {
-                    image 'node:9-alpine'
+                    image 'node:9'
                 }
             }
             steps {
@@ -32,7 +32,7 @@ pipeline {
         stage('Test - web-application') {
             agent {
                 docker {
-                    image 'node:9-alpine'
+                    image 'node:9'
                 }
             }
             steps {
