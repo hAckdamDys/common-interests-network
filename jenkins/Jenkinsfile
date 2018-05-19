@@ -1,0 +1,62 @@
+pipeline {
+    agent none
+    environment {
+        CI = true
+    }
+    stages {
+        stage('Build - web-application') {
+            agent {
+                docker {
+                    image 'node:9-alpine'
+                }
+            }
+            steps {
+		        sh 'npm i npm@latest -g'
+                retry(2) {
+                    timeout(time: 50, unit: 'MINUTES') {
+                        sh 'cd web-application && npm install'
+                    }
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    sh 'cd web-application && npm run build'
+                }
+                sh 'cp -r ./web-application/build/* ./src/main/resources/static/'
+            }
+        }
+        stage('Build - server') {
+            agent any
+            steps {
+                sh './gradlew build -x test '
+            }
+        }
+        stage('Test - web-application') {
+            agent {
+                docker {
+                    image 'node:9-alpine'
+                }
+            }
+            steps {
+                sh 'cd web-application && npm test'
+            }
+        }
+        stage('Test - server') {
+            agent any
+            steps {
+                sh './gradlew test'
+            }
+        }
+        stage('Deliver') {
+            agent {
+                docker {
+                    image 'openjdk:8'
+                    args '-p 8000:8080'
+                }
+            }
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+                input message: 'You can access service at localhost:8000. When finished click proceed.'
+                sh './jenkins/scripts/kill.sh'
+            }
+        }
+    }
+}
