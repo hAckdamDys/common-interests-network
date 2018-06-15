@@ -14,6 +14,39 @@ public class Post {
     @ManyToMany(mappedBy = "posts")
     private Set<Category> categories;
 
+    @OneToMany(mappedBy = "post")
+    private Set<Like> likes;
+
+    @OneToMany(mappedBy = "post")
+    private Set<Comment> comments;
+
+    @ManyToOne
+    private User author;
+
+    public Set<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<Like> likes) {
+        this.likes = likes;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     public Post(String contents) {
         this.contents = contents;
     }
