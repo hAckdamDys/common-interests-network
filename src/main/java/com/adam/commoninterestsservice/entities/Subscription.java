@@ -9,7 +9,7 @@ public class Subscription {
     private Long id;
 
     @ManyToOne
-    private Post category;
+    private Category category;
 
     @ManyToOne
     private User user;
@@ -25,11 +25,11 @@ public class Subscription {
         this.id = id;
     }
 
-    public Post getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Post category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
