@@ -1,5 +1,7 @@
 package com.adam.commoninterestsservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -15,9 +17,11 @@ public class Post {
     @ManyToMany(mappedBy = "posts")
     private Set<Category> categories;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private Set<Like> likes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private Set<Comment> comments;
 

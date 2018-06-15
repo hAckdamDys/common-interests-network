@@ -1,5 +1,7 @@
 package com.adam.commoninterestsservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ public class Category {
     @Column(unique = true)
     private String name;
 
+    @JsonIgnore
     @ManyToMany
     private Set<Post> posts;
 
