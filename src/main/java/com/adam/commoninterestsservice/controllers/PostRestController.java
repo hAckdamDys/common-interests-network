@@ -1,13 +1,17 @@
 package com.adam.commoninterestsservice.controllers;
 
 import com.adam.commoninterestsservice.entities.Post;
+import com.adam.commoninterestsservice.entities.User;
 import com.adam.commoninterestsservice.services.PostService;
+import com.adam.commoninterestsservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.Collection;
 
 @RestController
@@ -15,10 +19,12 @@ import java.util.Collection;
 public class PostRestController {
 
     private final PostService postService;
+    private final UserService userService;
 
     @Autowired
-    public PostRestController(PostService postService) {
+    public PostRestController(PostService postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -27,8 +33,10 @@ public class PostRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> createPost(@RequestBody Post input) {
-        Post created = this.postService.addPost(input.getContents());
+    ResponseEntity<?> createPost(@RequestBody Post input, Principal principal) {
+        UserDetails userDetails = (UserDetails) principal;
+        User user = userService.findByUsername(userDetails.getUsername());
+        Post created = this.postService.addPost(input, user);
         URI location = buildPostLocation(created);
         return ResponseEntity.created(location).build();
     }

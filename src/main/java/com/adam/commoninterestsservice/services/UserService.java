@@ -24,11 +24,11 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void addUser(UserDTO input) {
+    public User addUser(UserDTO input) {
         if (userRepository.findByUsername(input.getUsername()).isPresent()) {
             throw new UsernameTakenException(String.format("Username %s is already taken.", input.getUsername()));
         }
-        userRepository.save(new User(input.getUsername(), passwordEncoder.encode(input.getPassword())));
+        return userRepository.save(new User(input.getUsername(), passwordEncoder.encode(input.getPassword())));
     }
 
     public User findByUsername(String username) {

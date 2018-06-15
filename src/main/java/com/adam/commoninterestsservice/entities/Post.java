@@ -24,6 +24,13 @@ public class Post {
     @ManyToOne
     private User author;
 
+    public Post(String contents) {
+        this.contents = contents;
+    }
+
+    public Post() {
+    }
+
     public Set<Like> getLikes() {
         return likes;
     }
@@ -46,13 +53,6 @@ public class Post {
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public Post(String contents) {
-        this.contents = contents;
-    }
-
-    protected Post() {
     }
 
     public Long getId() {
