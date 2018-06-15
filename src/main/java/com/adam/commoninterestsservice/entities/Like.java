@@ -3,6 +3,7 @@ package com.adam.commoninterestsservice.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "like_t")
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

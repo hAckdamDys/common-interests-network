@@ -3,6 +3,7 @@ package com.adam.commoninterestsservice.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "comment_t")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

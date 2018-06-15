@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "group_t")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -3,6 +3,7 @@ package com.adam.commoninterestsservice.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "subscription_t")
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
