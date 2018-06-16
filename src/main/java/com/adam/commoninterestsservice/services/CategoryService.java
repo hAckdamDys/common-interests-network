@@ -25,7 +25,8 @@ public class CategoryService {
     }
 
     public Category addCategory(Category input) {
-        Category toSave = new Category(input.getName());
+        Category toSave = new Category(input.getName() == null ? "no-category" :
+                (input.getName().equals("") ? "no-category" : input.getName()));
         return categoryRepository.save(toSave);
     }
 

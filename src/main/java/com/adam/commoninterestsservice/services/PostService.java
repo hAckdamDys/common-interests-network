@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,12 +42,18 @@ public class PostService {
     public Post addPost(Post input, User author) {
         Post toSave = new Post();
         toSave.setAuthor(author);
-        toSave.setContents(input.getContents());
-        toSave.setCategories(input.getCategories() == null ? new HashSet<>() :
-                input.getCategories().stream()
-                        .map(category -> categoryRepository.findByName(category.getName())
-                                .orElseGet(() -> categoryRepository.save(new Category(category.getName()))))
-                        .collect(Collectors.toSet()));
+        toSave.setContents(input.getContents() == null ? "(no-contents)" :
+                (input.getContents().equals("") ? "(no-contents)" : input.getContents()));
+        if (input.getCategories() == null) {
+            toSave.setCategories(Collections.singleton(categoryRepository.findByName("no-category")
+                    .orElseGet(() -> categoryRepository.save(new Category("no-category")))));
+        } else {
+            toSave.setCategories(input.getCategories().stream()
+                    .map(category -> categoryRepository.findByName(category.getName())
+                            .orElseGet(() -> categoryRepository.save(new Category(category.getName() == null ? "no-category" :
+                                    (category.getName().equals("") ? "no-category" : category.getName())))))
+                    .collect(Collectors.toSet()));
+        }
         toSave.setComments(new HashSet<>());
         toSave.setLikes(new HashSet<>());
         return postRepository.save(toSave);
