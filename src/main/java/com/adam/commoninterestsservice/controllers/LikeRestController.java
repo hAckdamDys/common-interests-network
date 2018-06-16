@@ -6,6 +6,7 @@ import com.adam.commoninterestsservice.services.LikeService;
 import com.adam.commoninterestsservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +37,8 @@ public class LikeRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> createLike(@PathVariable Long postId, Principal principal) {
-        UserDetails userDetails = (UserDetails) principal;
+    ResponseEntity<?> createLike(@PathVariable Long postId, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
         Like created = this.likeService.addLike(postId, user);
         URI location = buildLocation(created);

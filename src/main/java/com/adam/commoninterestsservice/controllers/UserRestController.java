@@ -5,6 +5,7 @@ import com.adam.commoninterestsservice.entities.User;
 import com.adam.commoninterestsservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +28,8 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.GET)
-    public UserDTO getUser(Principal principal) {
-        UserDetails userDetails = (UserDetails) principal;
+    public UserDTO getUser(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = this.userService.findByUsername(userDetails.getUsername());
         return new UserDTO(user.getUsername());
     }

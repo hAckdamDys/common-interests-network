@@ -6,6 +6,7 @@ import com.adam.commoninterestsservice.services.CommentService;
 import com.adam.commoninterestsservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,9 +34,9 @@ public class CommentRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> createComment(@PathVariable Long postId, @RequestBody Comment input, Principal principal) {
-        UserDetails userDetails = (UserDetails) principal;
-        User author = userService.findByUsername(((UserDetails) principal).getUsername());
+    ResponseEntity<?> createComment(@PathVariable Long postId, @RequestBody Comment input, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User author = userService.findByUsername(userDetails.getUsername());
         Comment created = this.commentService.addComment(input, postId, author);
         URI location = buildLocation(created);
         return ResponseEntity.created(location).build();

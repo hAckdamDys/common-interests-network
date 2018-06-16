@@ -6,6 +6,7 @@ import com.adam.commoninterestsservice.services.GroupService;
 import com.adam.commoninterestsservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,15 +33,15 @@ public class GroupRestController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user/groups")
-    Collection<Group> readAllGroupsByUserId(Principal principal) {
-        UserDetails userDetails = (UserDetails) principal;
+    Collection<Group> readAllGroupsByUserId(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
         return this.groupService.getAllGroupsByUserId(user);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/groups")
-    ResponseEntity<?> createGroup(@RequestBody Group input, Principal principal) {
-        UserDetails userDetails = (UserDetails) principal;
+    ResponseEntity<?> createGroup(@RequestBody Group input, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
         Group created = this.groupService.addGroup(input, user);
         URI location = buildLocation(created);

@@ -6,7 +6,10 @@ import com.adam.commoninterestsservice.services.PostService;
 import com.adam.commoninterestsservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -33,8 +36,8 @@ public class PostRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> createPost(@RequestBody Post input, Principal principal) {
-        UserDetails userDetails = (UserDetails) principal;
+    ResponseEntity<?> createPost(@RequestBody Post input, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
         Post created = this.postService.addPost(input, user);
         URI location = buildPostLocation(created);

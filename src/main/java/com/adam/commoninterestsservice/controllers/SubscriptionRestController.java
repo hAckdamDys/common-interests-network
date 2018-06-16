@@ -7,6 +7,7 @@ import com.adam.commoninterestsservice.services.SubscriptionService;
 import com.adam.commoninterestsservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,20 +30,20 @@ public class SubscriptionRestController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    Collection<Category> readAllSubscriptions(Principal principal) {
-        Long userId = getUser(principal).getId();
+    Collection<Category> readAllSubscriptions(Authentication authentication) {
+        Long userId = getUser(authentication).getId();
         return this.subscriptionService.getAllByUserId(userId);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> createSubscription(@RequestBody Category inputCategory, Principal principal) {
-        Subscription created = this.subscriptionService.addSubscription(inputCategory, getUser(principal));
+    ResponseEntity<?> createSubscription(@RequestBody Category inputCategory, Authentication authentication) {
+        Subscription created = this.subscriptionService.addSubscription(inputCategory, getUser(authentication));
         URI location = buildLocation(created);
         return ResponseEntity.created(location).build();
     }
 
-    private User getUser(Principal principal) {
-        UserDetails userDetails = (UserDetails) principal;
+    private User getUser(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return userService.findByUsername(userDetails.getUsername());
     }
 
