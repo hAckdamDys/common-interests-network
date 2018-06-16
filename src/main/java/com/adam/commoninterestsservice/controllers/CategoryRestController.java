@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.HashSet;
 
 @RestController
 @RequestMapping("/categories")
@@ -33,6 +34,16 @@ public class CategoryRestController {
     @RequestMapping(method = RequestMethod.GET, value = "/{categoryName}/posts")
     Collection<Post> getAllPostsByCategory(@PathVariable String categoryName) {
         return this.postService.getAllPostsByCategory(categoryName);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/list/{categories}/posts")
+    Collection<Post> getAllPostsByCategories(@PathVariable String categories) {
+        String[] categoriesArray = categories.split("3");
+        Collection<Post> result = new HashSet<>();
+        for (String category : categoriesArray) {
+            result.addAll(postService.getAllPostsByCategory(category.trim()));
+        }
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.POST)
