@@ -14,7 +14,7 @@ public class Post {
 
     private String contents;
 
-    @ManyToMany(mappedBy = "posts")
+    @ManyToMany
     private Set<Category> categories;
 
     @JsonIgnore

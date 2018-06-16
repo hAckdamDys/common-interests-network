@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +31,15 @@ public class PostService {
 
     public Collection<Post> getAllPosts() {
         return postRepository.findAll();
+    }
+
+    public Collection<Post> getAllPostsByCategory(String categoryName) {
+        Optional<Category> categoryOpt = categoryRepository.findByName(categoryName);
+        if (categoryOpt.isPresent()) {
+            Category category = categoryOpt.get();
+            return postRepository.findPostsByCategoriesContains(category);
+        }
+        return new ArrayList<>();
     }
 
     public Post addPost(Post input, User author) {

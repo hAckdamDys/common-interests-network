@@ -24,9 +24,9 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category addCategory(String name) {
-        Category created = new Category(name);
-        return categoryRepository.save(created);
+    public Category addCategory(Category input) {
+        Category toSave = new Category(input.getName());
+        return categoryRepository.save(toSave);
     }
 
     public Category updateCategory(Long id, String name) {

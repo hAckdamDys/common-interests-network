@@ -17,7 +17,7 @@ public class Category {
     private String name;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(mappedBy = "categories")
     private Set<Post> posts;
 
     public Category(String name) {
