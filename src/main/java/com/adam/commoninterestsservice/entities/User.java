@@ -1,5 +1,6 @@
 package com.adam.commoninterestsservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,10 +16,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
+
+    @JsonIgnore
     private String password;
+    @JsonIgnore
     private boolean enabled = true;
-    private boolean nonExpired = true;
-    private boolean nonLocked = true;
+    @JsonIgnore
+    private boolean accountNonExpired = true;
+    @JsonIgnore
+    private boolean accountNonLocked = true;
+    @JsonIgnore
     private boolean credentialsNonExpired = true;
 
     public User(String username, String password) {
@@ -29,6 +36,7 @@ public class User implements UserDetails {
     public User() { }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>();
     }
@@ -45,12 +53,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return nonExpired;
+        return accountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return nonLocked;
+        return accountNonLocked;
     }
 
     @Override
@@ -83,12 +91,12 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public void setNonExpired(boolean nonExpired) {
-        this.nonExpired = nonExpired;
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
     }
 
-    public void setNonLocked(boolean nonLocked) {
-        this.nonLocked = nonLocked;
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {

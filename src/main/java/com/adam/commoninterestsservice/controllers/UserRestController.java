@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.security.Principal;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -31,7 +30,9 @@ public class UserRestController {
     public UserDTO getUser(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = this.userService.findByUsername(userDetails.getUsername());
-        return new UserDTO(user.getUsername());
+        UserDTO response = new UserDTO(user.getUsername());
+        response.setId(user.getId());
+        return response;
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
