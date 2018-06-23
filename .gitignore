@@ -28,3 +28,4 @@
 /.nb-gradle/
 
 */main/resources/application-local.properties
+*/main/resources/application-remote.properties
