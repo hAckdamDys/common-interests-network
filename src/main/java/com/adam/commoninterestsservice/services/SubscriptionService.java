@@ -24,8 +24,13 @@ public class SubscriptionService {
         this.categoryRepository = categoryRepository;
     }
 
-    public void removeSubscription(Long subscriptionId) {
-        this.subscriptionRepository.deleteById(subscriptionId);
+    public Subscription getByCategoryName(String name) {
+        return this.subscriptionRepository.findByCategoryName(name)
+                .orElseThrow(() -> new CategoryNotFoundException(String.format("Category with name %s not found", name)));
+    }
+
+    public void removeSubscription(Subscription subscription) {
+        this.subscriptionRepository.delete(subscription);
     }
 
     public Subscription addSubscription(Category inputCategory, User user) {

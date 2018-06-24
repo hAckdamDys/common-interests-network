@@ -52,9 +52,10 @@ public class SubscriptionRestController {
                 .buildAndExpand(created.getId()).toUri();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{subscriptionId}")
-    ResponseEntity<?> deleteSubscription(@PathVariable Long subscriptionId) {
-        this.subscriptionService.removeSubscription(subscriptionId);
+    @RequestMapping(method = RequestMethod.DELETE)
+    ResponseEntity<?> deleteSubscription(@RequestBody Category inputCategory) {
+        Subscription toRemove = this.subscriptionService.getByCategoryName(inputCategory.getName());
+        this.subscriptionService.removeSubscription(toRemove);
         return ResponseEntity.noContent().build();
     }
 }
