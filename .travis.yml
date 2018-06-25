@@ -1,5 +1,6 @@
+apply plugin: 'spring-boot'
 language: java
-mainClassName: "CommonInterestsServiceApplication"
+mainClassName: 'com.foo.Bar'
 jdk: oraclejdk8
 install: true
 script: gradle assemble
