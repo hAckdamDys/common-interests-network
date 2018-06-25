@@ -1,3 +1,4 @@
+apply plugin: 'spring-boot'
 language: java
 jdk: oraclejdk8
 install: true
